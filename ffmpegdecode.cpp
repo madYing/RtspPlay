@@ -13,7 +13,7 @@
 //        time_out=0;
 //        if   (firsttimeplay) {
 //            firsttimeplay=0;
-//            return   1; //è¿™ä¸ªå°±æ˜¯è¶…æ—¶çš„è¿”å›
+//            return   1; //Õâ¸ö¾ÍÊÇ³¬Ê±µÄ·µ»Ø
 //        }
 //    }
 //    return   0;
@@ -24,15 +24,15 @@ ffmpegDecode::ffmpegDecode(QObject *parent):
 {
     pCodecCtx = NULL;
     videoStreamIndex=-1;
-    av_register_all();//æ³¨å†Œåº“ä¸­æ‰€æœ‰å¯ç”¨çš„æ–‡ä»¶æ ¼å¼å’Œè§£ç å™¨
-    avformat_network_init();//åˆå§‹åŒ–ç½‘ç»œæµæ ¼å¼,ä½¿ç”¨RTSPç½‘ç»œæµæ—¶å¿…é¡»å…ˆæ‰§è¡Œ
-    pFormatCtx = avformat_alloc_context();//ç”³è¯·ä¸€ä¸ªAVFormatContextç»“æ„çš„å†…å­˜,å¹¶è¿›è¡Œç®€å•åˆå§‹åŒ–
+    av_register_all();//×¢²á¿âÖĞËùÓĞ¿ÉÓÃµÄÎÄ¼ş¸ñÊ½ºÍ½âÂëÆ÷
+    avformat_network_init();//³õÊ¼»¯ÍøÂçÁ÷¸ñÊ½,Ê¹ÓÃRTSPÍøÂçÁ÷Ê±±ØĞëÏÈÖ´ĞĞ
+    pFormatCtx = avformat_alloc_context();//ÉêÇëÒ»¸öAVFormatContext½á¹¹µÄÄÚ´æ,²¢½øĞĞ¼òµ¥³õÊ¼»¯
     o_pFormatCtx = NULL;
 
     //out
     ofmt = NULL;
 
-//   s pFormatCtx->interrupt_callback = interrupt_cb;  //æ³¨å†Œå›è°ƒå‡½æ•°
+//   s pFormatCtx->interrupt_callback = interrupt_cb;  //×¢²á»Øµ÷º¯Êı
     pFrame=av_frame_alloc();
     //outFileName = "test.mp4";
     isRecord = false;
@@ -49,7 +49,7 @@ ffmpegDecode::~ffmpegDecode()
 
 bool ffmpegDecode::init()
 {
-    //æ‰“å¼€è§†é¢‘æµ
+    //´ò¿ªÊÓÆµÁ÷
     int err = avformat_open_input(&pFormatCtx, url.toStdString().c_str(), NULL,NULL);
     if (err < 0)
     {
@@ -57,7 +57,7 @@ bool ffmpegDecode::init()
         return false;
     }
 
-    //è·å–è§†é¢‘æµä¿¡æ¯   //è¯»å…¥ä¸€ä¸²æµ ç”¨äºåˆ†æ
+    //»ñÈ¡ÊÓÆµÁ÷ĞÅÏ¢   //¶ÁÈëÒ»´®Á÷ ÓÃÓÚ·ÖÎö
     //if (av_find_stream_info(pFormatCtx) < 0)
     err=avformat_find_stream_info(pFormatCtx,NULL);
     if(err < 0)
@@ -66,8 +66,8 @@ bool ffmpegDecode::init()
         return false;
     }
 
-    /*åŸè§£ç éƒ¨ä»½*/
-    //è·å–è§†é¢‘æµç´¢å¼•
+    /*Ô­½âÂë²¿·İ*/
+    //»ñÈ¡ÊÓÆµÁ÷Ë÷Òı
     videoStreamIndex = -1;
     for (unsigned int i = 0; i < pFormatCtx->nb_streams; i++)
     {
@@ -83,17 +83,17 @@ bool ffmpegDecode::init()
         return false;
     }
 
-    //è·å–è§†é¢‘æµçš„åˆ†è¾¨ç‡å¤§å°
+    //»ñÈ¡ÊÓÆµÁ÷µÄ·Ö±æÂÊ´óĞ¡
     pCodecCtx = pFormatCtx->streams[videoStreamIndex]->codec;
     width=pCodecCtx->width;
     height=pCodecCtx->height;
 
     avpicture_alloc(&pAVPicture,PIX_FMT_RGB24,pCodecCtx->width,pCodecCtx->height);
 
-    //è·å–è§†é¢‘æµè§£ç å™¨
+    //»ñÈ¡ÊÓÆµÁ÷½âÂëÆ÷
     AVCodec *pCodec;
     pCodec = avcodec_find_decoder(pCodecCtx->codec_id);
-    //sws_getContext()å‰ä¸‰ä¸ªå‚æ•°åˆ†åˆ«ä¸ºåŸå§‹å›¾åƒçš„å®½é«˜å’Œå›¾åƒåˆ¶å¼ï¼Œ4-6ä¸ºç›®æ ‡å›¾åƒçš„å®½é«˜å’Œå›¾åƒåˆ¶å¼ï¼Œæœ€åä¸‰ä¸ªå‚æ•°ä¸ºè½¬æ¢æ—¶ä½¿ç”¨çš„ç®—æ³•ã€è½¬æ¢æ—¶åŠ å…¥çš„filterå¤„ç†
+    //sws_getContext()Ç°Èı¸ö²ÎÊı·Ö±ğÎªÔ­Ê¼Í¼ÏñµÄ¿í¸ßºÍÍ¼ÏñÖÆÊ½£¬4-6ÎªÄ¿±êÍ¼ÏñµÄ¿í¸ßºÍÍ¼ÏñÖÆÊ½£¬×îºóÈı¸ö²ÎÊıÎª×ª»»Ê±Ê¹ÓÃµÄËã·¨¡¢×ª»»Ê±¼ÓÈëµÄfilter´¦Àí
     pSwsCtx = sws_getContext(width, height, PIX_FMT_YUV420P, width,height, PIX_FMT_RGB24,SWS_BICUBIC, 0, 0, 0);
     if (pCodec == NULL)
     {
@@ -102,7 +102,7 @@ bool ffmpegDecode::init()
     }
     qDebug() << QString("video size : width=%d height=%d \n").arg(pCodecCtx->width).arg(pCodecCtx->height);
 
-    //æ‰“å¼€å¯¹åº”è§£ç å™¨
+    //´ò¿ª¶ÔÓ¦½âÂëÆ÷
     if (avcodec_open2(pCodecCtx, pCodec, NULL) < 0)
     {
         qDebug() << "Unable to open codec";
@@ -116,10 +116,10 @@ bool ffmpegDecode::init()
 
 bool ffmpegDecode::initRecord()
 {
-    /*è¾“å‡ºåˆå§‹åŒ–*/
+    /*Êä³ö³õÊ¼»¯*/
     QString datetime = QDateTime::currentDateTime().toString("yyyy-mm-dd-hh-mm-ss");
 	outFileName = datetime.append(".mp4");
-    avformat_alloc_output_context2(&o_pFormatCtx, NULL, NULL, outFileName.toStdString().c_str()); //åˆå§‹åŒ–è¾“å‡ºè§†é¢‘ç æµçš„AVFormatContextã€‚
+    avformat_alloc_output_context2(&o_pFormatCtx, NULL, NULL, outFileName.toStdString().c_str()); //³õÊ¼»¯Êä³öÊÓÆµÂëÁ÷µÄAVFormatContext¡£
     if (!o_pFormatCtx) {
         printf( "Could not create output context\n");
         return false;
@@ -128,7 +128,7 @@ bool ffmpegDecode::initRecord()
     for (unsigned int i = 0; i < pFormatCtx->nb_streams; i++) {
         //Create output AVStream according to input AVStream
         AVStream *in_stream = pFormatCtx->streams[i];
-        AVStream *out_stream = avformat_new_stream(o_pFormatCtx, in_stream->codec->codec); //åˆ›å»ºè¾“å‡ºç æµçš„AVStreamã€‚
+        AVStream *out_stream = avformat_new_stream(o_pFormatCtx, in_stream->codec->codec); //´´½¨Êä³öÂëÁ÷µÄAVStream¡£
         if (!out_stream) {
             printf( "Failed allocating output stream\n");
 //            ret = AVERROR_UNKNOWN;
@@ -136,7 +136,7 @@ bool ffmpegDecode::initRecord()
             return false;
         }
         //Copy the settings of AVCodecContext
-        if (avcodec_copy_context(out_stream->codec, in_stream->codec) < 0) {   //æ‹·è´è¾“å…¥è§†é¢‘ç æµçš„AVCodecContexçš„æ•°å€¼tåˆ°è¾“å‡ºè§†é¢‘çš„AVCodecContextã€‚
+        if (avcodec_copy_context(out_stream->codec, in_stream->codec) < 0) {   //¿½±´ÊäÈëÊÓÆµÂëÁ÷µÄAVCodecContexµÄÊıÖµtµ½Êä³öÊÓÆµµÄAVCodecContext¡£
             printf( "Failed to copy context from input to output stream codec context\n");
             //goto end;
         }
@@ -148,14 +148,14 @@ bool ffmpegDecode::initRecord()
     av_dump_format(o_pFormatCtx, 0, outFileName.toStdString().c_str(), 1);
     //Open output file
     if (!(ofmt->flags & AVFMT_NOFILE)) {
-        int ret = avio_open(&o_pFormatCtx->pb, outFileName.toStdString().c_str(), AVIO_FLAG_WRITE);  //æ‰“å¼€è¾“å‡ºæ–‡ä»¶ã€‚
+        int ret = avio_open(&o_pFormatCtx->pb, outFileName.toStdString().c_str(), AVIO_FLAG_WRITE);  //´ò¿ªÊä³öÎÄ¼ş¡£
         if (ret < 0) {
             printf( "Could not open output file '%s'", outFileName.toStdString().c_str());
             //goto end;
         }
     }
     //Write file header
-    if (avformat_write_header(o_pFormatCtx, NULL) < 0) {  //å†™æ–‡ä»¶å¤´ï¼ˆå¯¹äºæŸäº›æ²¡æœ‰æ–‡ä»¶å¤´çš„å°è£…æ ¼å¼ï¼Œä¸éœ€è¦æ­¤å‡½æ•°ã€‚æ¯”å¦‚è¯´MPEG2TSï¼‰ã€‚
+    if (avformat_write_header(o_pFormatCtx, NULL) < 0) {  //Ğ´ÎÄ¼şÍ·£¨¶ÔÓÚÄ³Ğ©Ã»ÓĞÎÄ¼şÍ·µÄ·â×°¸ñÊ½£¬²»ĞèÒª´Ëº¯Êı¡£±ÈÈçËµMPEG2TS£©¡£
         printf( "Error occurred when opening output file\n");
         //goto end;
     }
@@ -171,12 +171,12 @@ void ffmpegDecode::setRecordState(bool state)
 
 void ffmpegDecode::h264Decodec()
 {
-    //ä¸€å¸§ä¸€å¸§è¯»å–è§†é¢‘
+    //Ò»Ö¡Ò»Ö¡¶ÁÈ¡ÊÓÆµ
     int frameFinished=0;
     while(av_read_frame(pFormatCtx, &packet) >= 0 && flag){
 		if(packet.stream_index==videoStreamIndex)
 		{
-			//qDebug()<<"å¼€å§‹è§£ç "<<QDateTime::currentDateTime().toString("HH:mm:ss zzz");
+			//qDebug()<<"¿ªÊ¼½âÂë"<<QDateTime::currentDateTime().toString("HH:mm:ss zzz");
 			avcodec_decode_video2(pCodecCtx, pFrame, &frameFinished, &packet);
 			if (frameFinished)
 			{
@@ -195,7 +195,7 @@ void ffmpegDecode::h264Decodec()
                     packet.duration = av_rescale_q(packet.duration, in_stream->time_base, out_stream->time_base);
                     packet.pos = -1;
                     //Write
-                    if (av_interleaved_write_frame(o_pFormatCtx, &packet) < 0) { //å°†AVPacketï¼ˆå­˜å‚¨è§†é¢‘å‹ç¼©ç æµæ•°æ®ï¼‰å†™å…¥æ–‡ä»¶ã€‚
+                    if (av_interleaved_write_frame(o_pFormatCtx, &packet) < 0) { //½«AVPacket£¨´æ´¢ÊÓÆµÑ¹ËõÂëÁ÷Êı¾İ£©Ğ´ÈëÎÄ¼ş¡£
                         printf( "Error muxing packet\n");
                         break;
                     }
@@ -205,14 +205,14 @@ void ffmpegDecode::h264Decodec()
 					pFrame->linesize, 0,
 					height, pAVPicture.data, pAVPicture.linesize);
 
-				//å‘é€è·å–ä¸€å¸§å›¾åƒä¿¡å·
+				//·¢ËÍ»ñÈ¡Ò»Ö¡Í¼ÏñĞÅºÅ
 				QImage image(pAVPicture.data[0],width,height,QImage::Format_RGB888);
 				emit GetImage(image);
 
 				mutex.unlock();
 			}
 		}
-        av_free_packet(&packet);//é‡Šæ”¾èµ„æº,å¦åˆ™å†…å­˜ä¼šä¸€ç›´ä¸Šå‡
+        av_free_packet(&packet);//ÊÍ·Å×ÊÔ´,·ñÔòÄÚ´æ»áÒ»Ö±ÉÏÉı
     }
     if(isRecord)
     {
@@ -223,7 +223,7 @@ void ffmpegDecode::h264Decodec()
 void ffmpegDecode::wFileTrailer()
 {
     //Write file trailer
-    av_write_trailer(o_pFormatCtx);//å†™æ–‡ä»¶å°¾ï¼ˆå¯¹äºæŸäº›æ²¡æœ‰æ–‡ä»¶å¤´çš„å°è£…æ ¼å¼ï¼Œä¸éœ€è¦æ­¤å‡½æ•°ã€‚æ¯”å¦‚è¯´MPEG2TSï¼‰ã€‚\
+    av_write_trailer(o_pFormatCtx);//Ğ´ÎÄ¼şÎ²£¨¶ÔÓÚÄ³Ğ©Ã»ÓĞÎÄ¼şÍ·µÄ·â×°¸ñÊ½£¬²»ĞèÒª´Ëº¯Êı¡£±ÈÈçËµMPEG2TS£©¡£\
     ///* close output */
     if (o_pFormatCtx && !(ofmt->flags & AVFMT_NOFILE))
         avio_close(o_pFormatCtx->pb);

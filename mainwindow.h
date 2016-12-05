@@ -5,6 +5,7 @@
 #include "ffmpegdecode.h"
 #include <QImage>
 #include "rtspthread.h"
+#include "videowidget.h"
 
 namespace Ui {
 class MainWindow;
@@ -18,7 +19,7 @@ public:
     explicit MainWindow(QWidget *parent = 0);
     ~MainWindow();
 
-//    void paintEvent(QPaintEvent *event);
+    void paintEvent(QPaintEvent *event);
 
 private slots:
     void on_playBtn_clicked();
@@ -31,6 +32,9 @@ private:
     bool recordFlag;
     ffmpegDecode *ffmpeg;
     RtspThread *rtspthread;
+    QImage videoimage;
+
+	videoWidget *videView;
 };
 
 #endif // MAINWINDOW_H

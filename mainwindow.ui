@@ -15,27 +15,8 @@
   </property>
   <widget class="QWidget" name="centralWidget">
    <layout class="QGridLayout" name="gridLayout">
-    <item row="0" column="0">
-     <layout class="QVBoxLayout" name="verticalLayout_2" stretch="5,0,0">
-      <item>
-       <widget class="QFrame" name="frame">
-        <property name="frameShape">
-         <enum>QFrame::StyledPanel</enum>
-        </property>
-        <property name="frameShadow">
-         <enum>QFrame::Raised</enum>
-        </property>
-        <layout class="QVBoxLayout" name="verticalLayout">
-         <item>
-          <widget class="QLabel" name="video_label">
-           <property name="text">
-            <string>TextLabel</string>
-           </property>
-          </widget>
-         </item>
-        </layout>
-       </widget>
-      </item>
+    <item row="1" column="0">
+     <layout class="QVBoxLayout" name="verticalLayout_2" stretch="0,0">
       <item>
        <layout class="QHBoxLayout" name="horizontalLayout">
         <item>
@@ -108,6 +89,9 @@
        </layout>
       </item>
      </layout>
+    </item>
+    <item row="0" column="0">
+     <widget class="QWidget" name="widget" native="true"/>
     </item>
    </layout>
   </widget>

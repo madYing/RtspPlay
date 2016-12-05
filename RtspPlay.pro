@@ -15,11 +15,13 @@ TEMPLATE = app
 SOURCES += main.cpp\
         mainwindow.cpp \
     ffmpegdecode.cpp \
-    rtspthread.cpp
+    rtspthread.cpp \
+    videowidget.cpp
 
 HEADERS  += mainwindow.h \
     ffmpegdecode.h \
-    rtspthread.h
+    rtspthread.h \
+    videowidget.h
 
 FORMS    += mainwindow.ui
 

@@ -35,13 +35,13 @@
       <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
       <Extensions>cpp;c;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
     </Filter>
-    <Filter Include="Generated Files\Release">
-      <UniqueIdentifier>{fab03c22-6f8a-4cb3-a214-28e2ba20cb92}</UniqueIdentifier>
+    <Filter Include="Generated Files\Debug">
+      <UniqueIdentifier>{e462e3c2-5d98-45ce-bb7d-f6f3768c082e}</UniqueIdentifier>
       <Extensions>cpp;moc</Extensions>
       <SourceControlFiles>False</SourceControlFiles>
     </Filter>
-    <Filter Include="Generated Files\Debug">
-      <UniqueIdentifier>{8959a451-1252-447d-ada5-6961da4aeaa4}</UniqueIdentifier>
+    <Filter Include="Generated Files\Release">
+      <UniqueIdentifier>{da38339b-cee1-4cbc-937d-3a7a3a3af802}</UniqueIdentifier>
       <Extensions>cpp;moc</Extensions>
       <SourceControlFiles>False</SourceControlFiles>
     </Filter>
@@ -58,6 +58,15 @@
     </ClCompile>
     <ClCompile Include="rtspthread.cpp">
       <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="videowidget.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Release\moc_videowidget.cpp">
+      <Filter>Generated Files\Release</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Debug\moc_videowidget.cpp">
+      <Filter>Generated Files\Debug</Filter>
     </ClCompile>
     <ClCompile Include="GeneratedFiles\Release\moc_mainwindow.cpp">
       <Filter>Generated Files\Release</Filter>
@@ -82,6 +91,9 @@
     <ClInclude Include="rtspthread.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <CustomBuild Include="videowidget.h">
+      <Filter>Header Files</Filter>
+    </CustomBuild>
   </ItemGroup>
   <ItemGroup>
     <CustomBuild Include="mainwindow.ui">
